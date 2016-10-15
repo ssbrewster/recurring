@@ -51,7 +51,8 @@ describe('Plan', () => {
   })
 
   it('can fetch all plans from the test Recurly account', done => {
-    recurly.Plan().all(plans => {
+    recurly.Plan().all((err, plans) => {
+      demand(err).not.exist()
       plans.must.be.an.object()
       const planCodes = Object.keys(plans)
       planCodes.length.must.be.above(0)
@@ -129,7 +130,8 @@ describe('Account', () => {
   })
 
   it('can fetch all accounts from the test Recurly account', done => {
-    recurly.Account().all(accounts => {
+    recurly.Account().all((err, accounts) => {
+      demand(err).not.exist()
       accounts.must.be.an.object()
       const uuids = Object.keys(accounts)
       uuids.length.must.be.above(0)
@@ -493,7 +495,8 @@ describe('Transactions', () => {
   let trans1
 
   it('can fetch all transactions from the test Recurly account', done => {
-    recurly.Transaction().all(transactions => {
+    recurly.Transaction().all((err, transactions) => {
+      demand(err).not.exist()
       transactions.must.be.an.object()
       const transactionsIds = Object.keys(transactions)
       transactionsIds.length.must.be.above(0)
@@ -598,7 +601,8 @@ describe('Transactions', () => {
 
 describe('Invoices', () => {
   it('can fetch all invoices from the test Recurly account', done => {
-    recurly.Invoice().all(invoices => {
+    recurly.Invoice().all((err, invoices) => {
+      demand(err).not.exist()
       invoices.must.be.an.object()
       const invoiceIds = Object.keys(invoices)
       invoiceIds.length.must.be.above(0)
@@ -609,7 +613,8 @@ describe('Invoices', () => {
 
   describe('refunds', () => {
     before(function(done) {
-      recurly.Invoice().all({state: 'collected'}, invoices => {
+      recurly.Invoice().all({state: 'collected'}, (err, invoices) => {
+        demand(err).not.exist()
         this.invoices = invoices
         done()
       })
@@ -699,7 +704,8 @@ describe('Invoices', () => {
           account.createInvoice((err, invoice) => {
             if (err) return done(err)
 
-            recurly.Invoice().all({state: 'open'}, invoices => {
+            recurly.Invoice().all({state: 'open'}, (err, invoices) => {
+              demand(err).not.exist()
               this.invoices = invoices
               done()
             })
